@@ -1,0 +1,45 @@
+body{
+  font-family: 'Roboto Slab', serif;
+  text-align: center;
+  background: #f3fdf9;
+} 
+#navbar{
+  box-shadow: 0 0 10px #bdbdbd;
+}
+nav{
+  height: 10vh;
+  width: 90%;
+  margin:auto;
+}
+
+.navbar-brand{
+  font-family: 'Architects Daughter', cursive;
+  font-weight: bolder;
+  font-size: 2rem;
+  color: #ff4b5c;
+}
+
+.nav-item{
+  margin: 0px 5px;
+  padding: 0px 10px;
+}
+.nav-link{
+  font-size: 1.2rem;
+  color : black;
+}
+
+.nav-link:hover{
+  color: #ff4b5c;
+  text-decoration: none;
+  transform: scale(1.05); 
+}
+.sign-in{
+  background: #ff4b5c;
+  padding: 0px;
+  border-radius: 2px;
+}
+.sign-in:hover{
+  color: #ff4b5c;
+  background:black;
+  transform: scale(1.05); 
+}
