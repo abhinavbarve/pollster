@@ -1,3 +1,8 @@
+// -------------
+let acc_name
+let acc_pic
+
+// -------------
 require("dotenv").config();
 const express = require('express')
 const app = express()
@@ -37,7 +42,7 @@ mongoose.connect(process.env.DATABASE_KEY,{useNewUrlParser : true,useUnifiedTopo
 mongoose.set("useCreateIndex", true);                // remove deprecation warning.
 
 
-const userSchema = new mongoose.Schema({           // mongoose schema [compulsarily]
+const userSchema = new mongoose.Schema({             // mongoose schema [compulsarily]
   username: {
     type: String,
     required: true
@@ -66,8 +71,9 @@ passport.use(User.createStrategy());                 // comes from passport-loca
 
 // the following way of serializing and de-serializing is used for testing purposes.
 
-passport.serializeUser(User.serializeUser());     // (comes from passport-local-mongoose)
-passport.deserializeUser(User.deserializeUser()); // (comes from passport-local-mongoose)
+passport.serializeUser(User.serializeUser());        // (comes from passport-local-mongoose)
+passport.deserializeUser(User.deserializeUser());    // (comes from passport-local-mongoose)
+
 
 passport.use(new GoogleStrategy({                    // comes from passport-google-oauth20 strategy (this code has to be put after "starting of the session and other setup" and before the "routes". )
 	clientID: process.env.GOOGLE_CLIENT_ID,
@@ -75,18 +81,21 @@ passport.use(new GoogleStrategy({                    // comes from passport-goog
 	callbackURL: "http://localhost:8080/auth/google/pollster",
 	userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
 },
-	function (accessToken, refreshToken, profile, cb) {
-		User.findOrCreate({ googleId: profile.id, username: profile.displayName}, function (err, user) {
+	(accessToken, refreshToken, profile, cb) => {
+		acc_name = profile.displayName
+		acc_pic = profile.photos[0].value
+		User.findOrCreate({ googleId: profile.id, username: profile.displayName }, function (err, user) {
+			console.log(profile)
 			return cb(err, user);
 		});
 	}
 ));
 
 
-
-app.get("/" , (req,res)=>{
-    res.render("home", {})
-}) 
+app.get("/", (req, res) => {
+	(req.isAuthenticated()) ? (res.redirect("/pollster")) : (res.render("home", { title: "Home" }))
+	
+});
 
 
 app.get("/auth/google",                              // this will use the new GoogleStrategy to authenticate the user declared above. 
@@ -94,7 +103,7 @@ app.get("/auth/google",                              // this will use the new Go
 
 
 app.get("/pollster", (req, res) => {                 // pollster main page 
-	(req.isAuthenticated()) ? (res.render("pollster")) : (res.redirect("/"))
+	(req.isAuthenticated()) ? (res.render("pollster", {title: "Poll", acc_name : acc_name, acc_pic : acc_pic})) : (res.redirect("/"))
 })
 
 app.get("/auth/google/pollster",                     // google redirect link upon authentication.
