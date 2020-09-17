@@ -16,7 +16,7 @@ nav{
   font-family: 'Architects Daughter', cursive;
   font-weight: bolder;
   font-size: 2rem;
-  color: #ff4b5c;
+  color: #ff4b5c !important;
 }
 .navbar-brand:hover{
   color: #ff4b5c;
@@ -24,8 +24,6 @@ nav{
 
 .nav-item{
   padding: 0px 10px;
-  border-style: none solid none none;
-  border-color: #ff4b5c;
 }
 
 .nav-link{
@@ -33,7 +31,6 @@ nav{
   color : black;
 }
 .nav-link:hover{
-  color: #ff4b5c;
   text-decoration: none;
   transform: scale(1.01); 
 }
@@ -43,7 +40,7 @@ nav{
   border-radius: 2px;
 }
 .sign-in:hover{
-  color: #ff4b5c;
+  color: #ff4b5c !important;
   background:black;
   transform: scale(1.02); 
 }
@@ -53,6 +50,18 @@ nav{
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+
+.navbar-toggler-icon{
+  color: black;
+}
+
+#login-page{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh
 }
 /* ------------------------------------ */
 

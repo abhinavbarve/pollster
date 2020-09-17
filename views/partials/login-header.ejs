@@ -21,7 +21,7 @@
 
     <body>
         <div id="navbar" class="container-fluid">
-            <nav class="navbar navbar-expand-lg">
+            <nav class="navbar navbar-expand-lg navbar-light ">
                 <a class="navbar-brand" href="#">Pollster.org</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,8 +36,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/pollster"><img src="https://img.icons8.com/flat_round/32/000000/hand.png"/>Vote</a>
                         </li>
-                        <li class="nav-item account-nav">
+                        <li  title=<%=acc_name%> class="nav-item account-nav">
                             <img style="border-radius: 100%; height: 32px; width: 32px" src=<%=acc_pic%> /><a class="nav-link" href=""><%=acc_name.split(" ")[0]%></a>
+                        </li>
+                        <li class="nav-item">
+                            <a title="Logout" class="nav-link" href="/logout"><img src="https://img.icons8.com/windows/32/000000/logout-rounded-down.png"/></a>
                         </li>
                     </ul>
                     <!-- <form class="form-inline my-2 my-lg-0">

@@ -28,8 +28,8 @@ app.use(express.static('public'));
 
 app.use(session({                                    // comes from express-session [starts a session]                     
 	secret: process.env.SECRET,
-	resave: false,
-	saveUninitialized: false
+	saveUninitialized: false,
+	resave: false
 }));
 
 
@@ -114,12 +114,19 @@ app.get("/auth/google/pollster",                     // google redirect link upo
 	}
 );
 
+app.get("/login", (req, res) => {
+	(req.isAuthenticated()) ? res.redirect("/pollster") : (res.render("login", { title: "Login" }));
+})
+
+app.get("/logout", (req, res) => {
+	req.logout();
+	res.redirect("/");
+})
+
+
 
 
 // Listen on Port 8080
 app.listen(8080, (req,res)=>{
   console.log("Server is running on port 8080.")
 })
-
-
-
