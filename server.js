@@ -1,7 +1,7 @@
 // -------------
 let acc_name
 let acc_pic
-
+let googleId
 // -------------
 require("dotenv").config();
 const express = require('express')
@@ -43,12 +43,24 @@ mongoose.set("useCreateIndex", true);                // remove deprecation warni
 
 
 const userSchema = new mongoose.Schema({             // mongoose schema [compulsarily]
-  username: {
-    type: String,
-    required: true
-  },
-  googleId: String,
+	username: {
+		type: String,
+		required: true
+	},
+	googleId: String
 });
+
+const pollSchema = new mongoose.Schema({
+	maker: {
+		type: String,
+		required: true
+	},
+	ques: {
+		type: String, 
+		required: true
+	}
+	
+})
 
 userSchema.plugin(passportLocalMongoose)             // use the passport-local-mongoose package
 userSchema.plugin(findOrCreate)                      // use the mongoose-findorcreate package
@@ -84,8 +96,8 @@ passport.use(new GoogleStrategy({                    // comes from passport-goog
 	(accessToken, refreshToken, profile, cb) => {
 		acc_name = profile.displayName
 		acc_pic = profile.photos[0].value
-		User.findOrCreate({ googleId: profile.id, username: profile.displayName }, function (err, user) {
-			console.log(profile)
+		googleId = profile.id
+		User.findOrCreate({ googleId: googleId, username: acc_name }, function (err, user) {
 			return cb(err, user);
 		});
 	}
@@ -94,7 +106,6 @@ passport.use(new GoogleStrategy({                    // comes from passport-goog
 
 app.get("/", (req, res) => {
 	(req.isAuthenticated()) ? (res.redirect("/pollster")) : (res.render("home", { title: "Home" }))
-	
 });
 
 
@@ -109,7 +120,7 @@ app.get("/pollster", (req, res) => {                 // pollster main page
 app.get("/auth/google/pollster",                     // google redirect link upon authentication.
 	passport.authenticate("google", { failureRedirect: "/" }),
 	function (req, res) {
-		// Successful authentication, redirect home.
+		// Successful authentication, redirect to pollster.
 		res.redirect("/pollster");
 	}
 );
@@ -117,6 +128,28 @@ app.get("/auth/google/pollster",                     // google redirect link upo
 app.get("/login", (req, res) => {
 	(req.isAuthenticated()) ? res.redirect("/pollster") : (res.render("login", { title: "Login" }));
 })
+
+app.get("/newpoll", (req, res) => {
+	// (req.isAuthenticated()) ? res.render("newpoll",{title: "New Poll", acc_name : acc_name, acc_pic : acc_pic}) : (res.redirect("/login"));
+	res.render("newpoll", { title: "New Poll", acc_name: acc_name, acc_pic: acc_pic });
+})
+
+app.post("/newpoll", (req, res) => {
+	User.findOne({ googleId: googleId }, (err, foundUser) => {
+		if (!err) {
+			if (foundUser) {
+				founduser.polls.push({
+					ques: req.body.ques,
+					options: req.body.options
+				})
+				res.send("Poll has been added to the database.")
+			}
+		} else {
+			console.log(err);
+		}
+	});
+})
+
 
 app.get("/logout", (req, res) => {
 	req.logout();

@@ -3,6 +3,13 @@ body{
   text-align: center;
   background: #f3fdf9;
 } 
+
+.btn:focus, input:focus, a:hover{
+  box-shadow: none;
+  text-decoration: none;
+  color: #ff4b5c
+}
+
 #navbar{
   box-shadow: 0 0 5px #bdbdbd;
 }
@@ -135,6 +142,87 @@ nav{
 }
 
 .sign-in-buttons{
-    padding:10px 0px;
-    font-family: 'Roboto', sans-serif;
+  padding:10px 0px;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* ------------------------------- */
+
+#poll-page{
+  padding: 50px 0px;
+}
+
+#poll-list{
+  margin:auto;
+  padding: 50px 0px;
+  width: 80%;
+  background-color: rgb(230, 230, 230);
+  border-radius: 3px;
+}
+.big-heading{
+  font-family: 'Architects Daughter', cursive;
+  font-size: 3rem;
+  padding: 10px 0px;
+}
+
+.list{
+  width: 80%;
+  margin: 10px auto;
+  border-radius: 10px;
+}
+.ques-btn.btn-block{
+  padding: 10px 0px;
+  margin: 0px;
+  background: rgb(245, 245, 245);
+  border-radius: 0px;
+  border-style: solid ;
+  border-color: rgb(209, 209, 209);
+  border-width: 0.5px;
+}
+.ques-btn.btn-block:hover{
+  background: rgb(233, 233, 233)
+}
+
+/* ----------------------------- */
+
+#new-poll-page{
+  padding: 50px 0px;
+}
+
+.make-new-poll{
+  width: 80%;
+  margin: auto;
+  text-align: left;
+}
+
+.options-input{
+  margin: 10px 0px;
+}
+
+
+
+
+
+
+
+
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

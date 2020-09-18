@@ -36,11 +36,15 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/pollster"><img src="https://img.icons8.com/flat_round/32/000000/hand.png"/>Vote</a>
                         </li>
-                        <li  title=<%=acc_name%> class="nav-item account-nav">
-                            <img style="border-radius: 100%; height: 32px; width: 32px" src=<%=acc_pic%> /><a class="nav-link" href=""><%=acc_name.split(" ")[0]%></a>
-                        </li>
-                        <li class="nav-item">
-                            <a title="Logout" class="nav-link" href="/logout"><img src="https://img.icons8.com/windows/32/000000/logout-rounded-down.png"/></a>
+                        <li class="nav-item dropdown account-nav">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                                aria-haspopup="false" aria-expanded="false">
+                                <img style="border-radius: 100%; height: 32px; width: 32px" src=<%=acc_pic%> /><a class="nav-link" href=""><%=acc_name.split(" ")[0]%></a>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="/my-polls"><img src="https://img.icons8.com/officel/30/000000/doughnut-chart.png"/> My Polls</a>
+                                <a class="dropdown-item" href="/logout"><img src="https://img.icons8.com/windows/32/000000/logout-rounded-down.png"/> Logout</a>
+                            </div>
                         </li>
                     </ul>
                     <!-- <form class="form-inline my-2 my-lg-0">

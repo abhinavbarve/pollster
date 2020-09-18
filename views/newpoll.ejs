@@ -1,0 +1,26 @@
+<%-include("partials/login-header")%>
+
+<div id="new-poll-page">
+    <div class="jumbotron make-new-poll" >
+        <form action="/newpoll" method="POST">
+            <h1 class="display-4">Make a new poll!</h1>
+            <p class="lead">An authenticated or unauthenticated user would be able to participate in this pole. 
+                The user can also add an "own" option of choice.</p>
+            <hr class="my-4">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default"><strong>QUESTION - </strong></span>
+                </div>
+                <input type="text" name="ques" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" required>
+            </div>
+            <div class="input-group options-input">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><strong>Options <em>(seperated by line)</em></strong></span>
+                </div>
+                <textarea rows="5" name="options" class="form-control" aria-label="With textarea" required></textarea>
+            </div>
+                <a class="btn btn-dark btn-lg" href="#" role="button">Make a Poll!</a>
+        </form>
+    </div>
+</div>
+<%-include("partials/footer")%>
