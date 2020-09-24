@@ -3,14 +3,14 @@
         
         <div id="poll-list">
             <h1 class="big-heading">Pollster.org</h1>
-            <h5>Below are the polls made by <%=acc_name%></h5>
+            <h5>Below are the polls made by <strong><%=acc_name%></strong>.</h5>
             <h5>Select a poll to see the results or <a href="/newpoll"> make a new poll. </a></h5>
             <div class="list">
-                <%acc_polls.forEach((each_poll)=>{%>
-                    <button class="btn btn-block ques-btn"><%=each_poll.ques%></button>
+                <%acc_polls.reverse().forEach((each_poll)=>{%>
+                    <a href=<%"/polls/"each_poll.pollId %>><button class="btn btn-block ques-btn"><%=each_poll.ques%></button></a>
                 <%})%>
             </div>
         </div>
-    
+
     </div>
 <%include("partials/footer")%>

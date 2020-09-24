@@ -6,16 +6,9 @@
             <h5>Below are the polls hosted by Pollster.</h5>
             <h5>Select a poll to see the results or <a href="/newpoll"> make a new poll. </a></h5>
             <div class="list">
-                <button class="btn btn-block ques-btn">Who will win the IPL 2020?</button>
-                <button class="btn btn-block ques-btn">Who is the wisest man on the planet?</button>
-                <button class="btn btn-block ques-btn">Can you buy me a coffee?</button>
-                <button class="btn btn-block ques-btn">How many pull-ups can you do in one round?</button>
-                <button class="btn btn-block ques-btn">Which has the better music Hollywood or Bollywood?</button>
-                <button class="btn btn-block ques-btn">Should Pakistan be blacklisted by the FATF?</button>
-                <button class="btn btn-block ques-btn">Is listening to an audiobook a great option?</button>
-                <button class="btn btn-block ques-btn">What is your favorite food?</button>
-                <button class="btn btn-block ques-btn">What is your favorite sport?</button>
-                <button class="btn btn-block ques-btn">How many glasses of water do you drink in a day?</button>
+                <%polls.reverse().forEach((each_poll)=>{%>
+                    <a href= <%="/polls/"+each_poll.pollId%> ><button class="btn btn-block ques-btn"><%=each_poll.ques%></button>
+                <%})%>
             </div>
         </div>
     

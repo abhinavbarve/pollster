@@ -123,7 +123,17 @@ app.get("/auth/google",                              // this will use the new Go
 
 
 app.get("/pollster", (req, res) => {                 // pollster main page 
-	(req.isAuthenticated()) ? (res.render("pollster", {title: "Poll", acc_name : acc_name, acc_pic : acc_pic})) : (res.redirect("/"))
+	Poll.find({}, (err, foundPolls) => {
+		if (!err) {
+			if (foundPolls) {
+				(req.isAuthenticated()) ? (res.render("pollster", { title: "Poll", acc_name: acc_name, acc_pic: acc_pic, polls: foundPolls })) : (res.redirect("/"))
+			} else {
+				(req.isAuthenticated()) ? (res.render("pollster", { title: "Poll", acc_name: acc_name, acc_pic: acc_pic, polls: [] })) : (res.redirect("/"))
+			}
+		} else {
+			console.log(err)
+		}
+	});
 })
 
 app.get("/auth/google/pollster",                     // google redirect link upon authentication.
@@ -164,11 +174,9 @@ app.post("/newpoll", (req, res) => {
 })
 
 app.get("/mypolls", (req, res) => {
-	// (req.isAuthenticated()) ? res.render("newpoll",{title: "New Poll", acc_name : acc_name, acc_pic : acc_pic}) : (res.redirect("/login"));
 	Poll.find({user_googleId: googleId}, (err, foundPolls) => {
 		if (!err) {
 			if (foundPolls) {
-				console.log(foundPolls)
 				res.render("mypolls", { title: "My Poll", acc_Id: googleId , acc_name: acc_name, acc_pic: acc_pic, acc_polls: foundPolls });
 			} else {
 				res.render("mypolls", { title: "My Poll", acc_Id: googleId , acc_name: acc_name, acc_pic: acc_pic, acc_polls: [] });
@@ -186,13 +194,10 @@ app.get("/logout", (req, res) => {
 })
 
 app.get("/polls/:pollId", (req, res) => {
-	
 	Poll.find({ pollId: req.params.pollId }, (err, foundPoll) => {
 		if (!err) {
 			if (foundPoll) {
-				let ques = foundPoll[0].ques;
-				let options = (foundPoll[0].options);
-				res.render('pollPage', { pollQues: ques, pollOptions: options });
+				res.render('pollPage', {title: "Poll", acc_Id: googleId , acc_name: acc_name, acc_pic: acc_pic, poll: foundPoll[0]});
 			} else {
 				res.send("No poll matches with given Id.")
 			}

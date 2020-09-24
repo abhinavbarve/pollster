@@ -1,2 +1,7 @@
-<h1><%=pollQues%></h1>
-<pre><%=pollOptions%></pre>
+<%-include("partials/login-header")%>
+
+    <div id="pollPage-poll">
+        <h3><%=poll.ques%></h1>
+        <h6 class="poll-options"><%-poll.options%></h3>
+    </div>
+<%-include("partials/footer")%>
