@@ -42,13 +42,13 @@ nav{
   transform: scale(1.01); 
 }
 .sign-in{
-  background: #ff4b5c;
+  background-color: #ff4b5c;
   padding: 0px;
   border-radius: 2px;
 }
 .sign-in:hover{
   color: #ff4b5c !important;
-  background:black;
+  background-color:black;
   transform: scale(1.02); 
 }
 
@@ -74,7 +74,7 @@ nav{
 
 /* poll-example */
 .landing-page{
-  height: 80vh;
+  height: 75vh;
   display:flex;
   flex-direction: row;
   justify-content: space-around;
@@ -90,7 +90,6 @@ nav{
   justify-content: center;
   align-items:center;
   width: 50%;
-  height: 100%;
   border-radius: 5px;
 }
 .big-question{
@@ -114,7 +113,7 @@ nav{
   margin: auto;
   padding: 5px 0px;
   border-radius: 2px;
-  background: #ff4b5c;
+  background-color: #ff4b5c;
   color: black;
   font-size: 1rem;
 }
@@ -139,6 +138,9 @@ nav{
 .poll-btn{
   margin: 10px 0px 0px;
   width: 80%;
+}
+.poll-btn:hover{
+  background-color: #ff4b5c;
 }
 
 .sign-in-buttons{
@@ -173,14 +175,15 @@ nav{
 .ques-btn.btn-block{
   padding: 10px 0px;
   margin: 0px;
-  background: rgb(245, 245, 245);
+  background-color: #fff;
   border-radius: 0px;
   border-style: solid ;
-  border-color: rgb(209, 209, 209);
+  border-color: rgb(230, 230, 230);
   border-width: 0.5px;
+  transition: background-color 0.0s; 
 }
 .ques-btn.btn-block:hover{
-  background: rgb(233, 233, 233)
+  background-color: rgb(245, 245, 245)
 }
 
 /* ----------------------------- */
@@ -202,7 +205,10 @@ nav{
 
 
 
-
+.footer-link{
+    color: black;
+    padding:5px 10px
+}
 
 
 

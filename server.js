@@ -4,6 +4,7 @@ let acc_pic
 let googleId
 // -------------
 require("dotenv").config();
+const { v4: uuidv4 } = require('uuid');
 const express = require('express')
 const app = express()
 const path = require('path');
@@ -51,22 +52,30 @@ const userSchema = new mongoose.Schema({             // mongoose schema [compuls
 });
 
 const pollSchema = new mongoose.Schema({
-	maker: {
+	user_googleId: {
+		type: String,
+		required: true
+	},
+	pollId: {
 		type: String,
 		required: true
 	},
 	ques: {
 		type: String, 
 		required: true
+	},
+	options: {
+		type: String, 
+		required: true
 	}
-	
 })
 
 userSchema.plugin(passportLocalMongoose)             // use the passport-local-mongoose package
 userSchema.plugin(findOrCreate)                      // use the mongoose-findorcreate package
 
 
-const User = new mongoose.model("User", userSchema)
+const User = new mongoose.model("User", userSchema); // user model
+const Poll = new mongoose.model("Poll", pollSchema); // poll question model
 
 passport.use(User.createStrategy());                 // comes from passport-local-mongoose
 
@@ -135,29 +144,65 @@ app.get("/newpoll", (req, res) => {
 })
 
 app.post("/newpoll", (req, res) => {
-	User.findOne({ googleId: googleId }, (err, foundUser) => {
+	
+	const newPoll = new Poll({
+		user_googleId: googleId, 
+		pollId: uuidv4(),
+		ques: req.body.ques,
+		options: req.body.options
+	})
+
+	newPoll.save((err) => {
 		if (!err) {
-			if (foundUser) {
-				founduser.polls.push({
-					ques: req.body.ques,
-					options: req.body.options
-				})
-				res.send("Poll has been added to the database.")
+			res.send("A new Poll was made.")
+		} else {
+			console.log(err)
+			res.send("There was some error in making a new poll. Please try again.")
+		}
+	})
+
+})
+
+app.get("/mypolls", (req, res) => {
+	// (req.isAuthenticated()) ? res.render("newpoll",{title: "New Poll", acc_name : acc_name, acc_pic : acc_pic}) : (res.redirect("/login"));
+	Poll.find({user_googleId: googleId}, (err, foundPolls) => {
+		if (!err) {
+			if (foundPolls) {
+				console.log(foundPolls)
+				res.render("mypolls", { title: "My Poll", acc_Id: googleId , acc_name: acc_name, acc_pic: acc_pic, acc_polls: foundPolls });
+			} else {
+				res.render("mypolls", { title: "My Poll", acc_Id: googleId , acc_name: acc_name, acc_pic: acc_pic, acc_polls: [] });
 			}
 		} else {
 			console.log(err);
+			res.send("Oops! There was an error in making this poll, try again.")
 		}
-	});
+	})
 })
-
 
 app.get("/logout", (req, res) => {
 	req.logout();
 	res.redirect("/");
 })
 
-
-
+app.get("/polls/:pollId", (req, res) => {
+	
+	Poll.find({ pollId: req.params.pollId }, (err, foundPoll) => {
+		if (!err) {
+			if (foundPoll) {
+				let ques = foundPoll[0].ques;
+				let options = (foundPoll[0].options);
+				res.render('pollPage', { pollQues: ques, pollOptions: options });
+			} else {
+				res.send("No poll matches with given Id.")
+			}
+		} else {
+			console.log(err);
+			res.send("Oops! There was an error in making this poll, try again.")
+		}
+	})
+	
+})
 
 // Listen on Port 8080
 app.listen(8080, (req,res)=>{
