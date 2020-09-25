@@ -74,7 +74,7 @@ nav{
 
 /* poll-example */
 .landing-page{
-  height: 75vh;
+  height: 90vh;
   display:flex;
   flex-direction: row;
   justify-content: space-around;

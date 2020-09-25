@@ -7,7 +7,7 @@
             <h5>Select a poll to see the results or <a href="/newpoll"> make a new poll. </a></h5>
             <div class="list">
                 <%acc_polls.reverse().forEach((each_poll)=>{%>
-                    <a href=<%"/polls/"each_poll.pollId %>><button class="btn btn-block ques-btn"><%=each_poll.ques%></button></a>
+                    <a href=<%="/polls/"+each_poll.pollId %>><button class="btn btn-block ques-btn"><%=each_poll.ques%></button></a>
                 <%})%>
             </div>
         </div>

@@ -177,6 +177,8 @@ app.get("/mypolls", (req, res) => {
 	Poll.find({user_googleId: googleId}, (err, foundPolls) => {
 		if (!err) {
 			if (foundPolls) {
+				console.log(googleId, acc_name, acc_pic)
+				console.log(foundPolls)
 				res.render("mypolls", { title: "My Poll", acc_Id: googleId , acc_name: acc_name, acc_pic: acc_pic, acc_polls: foundPolls });
 			} else {
 				res.render("mypolls", { title: "My Poll", acc_Id: googleId , acc_name: acc_name, acc_pic: acc_pic, acc_polls: [] });
