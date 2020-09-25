@@ -15,7 +15,8 @@ const passport = require("passport")
 const passportLocalMongoose = require("passport-local-mongoose")
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const findOrCreate = require("mongoose-findorcreate")
-
+const randomcolor = require("randomcolor");
+console.log(randomcolor())
 
 // view engine setup
 app.set('view engine', 'ejs');
@@ -177,8 +178,6 @@ app.get("/mypolls", (req, res) => {
 	Poll.find({user_googleId: googleId}, (err, foundPolls) => {
 		if (!err) {
 			if (foundPolls) {
-				console.log(googleId, acc_name, acc_pic)
-				console.log(foundPolls)
 				res.render("mypolls", { title: "My Poll", acc_Id: googleId , acc_name: acc_name, acc_pic: acc_pic, acc_polls: foundPolls });
 			} else {
 				res.render("mypolls", { title: "My Poll", acc_Id: googleId , acc_name: acc_name, acc_pic: acc_pic, acc_polls: [] });
@@ -199,7 +198,7 @@ app.get("/polls/:pollId", (req, res) => {
 	Poll.find({ pollId: req.params.pollId }, (err, foundPoll) => {
 		if (!err) {
 			if (foundPoll) {
-				res.render('pollPage', {title: "Poll", acc_Id: googleId , acc_name: acc_name, acc_pic: acc_pic, poll: foundPoll[0]});
+				res.render('poll-page', {title: "Poll", acc_Id: googleId , acc_name: acc_name, acc_pic: acc_pic, poll: foundPoll[0]});
 			} else {
 				res.send("No poll matches with given Id.")
 			}

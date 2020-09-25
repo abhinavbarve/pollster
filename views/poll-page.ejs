@@ -1,0 +1,20 @@
+<%-include("partials/header")%>
+<%-include('partials/login-nav.ejs')%>
+
+    <div id="poll-container" class="container-fluid">
+        <div id="poll-box">
+            <div class="poll-form">
+                <h3><%=poll.ques%></h1>
+                <ul>
+                        <%poll.options.split("\r\n").forEach((each) => { %>
+                                <li class="poll-page-opt"><%=each%></li>
+                        <%})%>
+                </ul>
+            </div>
+            <div class="poll-result">
+                <canvas id="result-chart" width="400" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+<script src="/javascripts/chart.js"></script>
+<%-include("partials/footer")%>
