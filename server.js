@@ -247,6 +247,7 @@ app.get("/logout", (req, res) => {
 })
 
 app.post("/polls/submitpoll", (req, res) => {
+
 	let opt_sel = req.body.poll_option
 	
 	Poll.findOne({ pollId: cur_pollId }, (err, foundPoll) => {
@@ -262,14 +263,13 @@ app.post("/polls/submitpoll", (req, res) => {
 				cur_poll.save((err) => { if (!err) { res.redirect("/polls/" + cur_pollId) } else { res.send(err) } })
 			
 			} else {
-				res.write("No such poll found.")
-				res.redirect("/polls")
+				res.write("No such poll found.");
+				res.redirect("/polls");
 			}
 		} else {
 			console.log(err);
 		}
 	})
-	
 
 })
 
