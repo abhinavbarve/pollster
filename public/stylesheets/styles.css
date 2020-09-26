@@ -236,16 +236,32 @@ nav{
   width: 40%;
   margin: auto
 }
+
+.poll-form select{
+  width: 50%;
+}
+
+#poll-page-opt, .poll-page-opt{
+  width:100%;
+  border-radius: 5px;
+  padding: 5px;
+  outline: none;
+}
+
+#poll-box button{
+  margin: 10px auto;
+}
+.poll-page-opt:hover{
+  background-color: rgb(218, 218, 218);
+  color: black;
+}
+
 .poll-result{
   width: 50%;
   margin:auto;
+  background-color: rgb(255, 255, 255) ;
+  border-radius: 10px;
 }
-.poll-options{
-  display: inline-block;
-  text-align: left;
-  white-space: pre-wrap;
-}
-
 
 
 

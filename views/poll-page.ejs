@@ -1,20 +1,155 @@
 <%-include("partials/header")%>
-<%-include('partials/login-nav.ejs')%>
+<!--  -->
 
     <div id="poll-container" class="container-fluid">
         <div id="poll-box">
-            <div class="poll-form">
+            <form class="poll-form" method="post" action="/polls/submitpoll">
                 <h3><%=poll.ques%></h1>
-                <ul>
-                        <%poll.options.split("\r\n").forEach((each) => { %>
-                                <li class="poll-page-opt"><%=each%></li>
+                <select name="poll_option" id="poll-page-opt">
+                        <%poll.options.forEach((each) => { %>
+                                <option class="poll-page-opt"><%=each.name%></li>
                         <%})%>
-                </ul>
-            </div>
+                </select>
+                <button class="btn btn-dark" type="submit">Submit</button>
+            </form>
             <div class="poll-result">
-                <canvas id="result-chart" width="400" height="400"></canvas>
+                <canvas id="result-chart" height="20vh" width="30vw"></canvas>
             </div>
         </div>
     </div>
 <script src="/javascripts/chart.js"></script>
 <%-include("partials/footer")%>
+
+
+
+
+
+<!-- /* 1 */
+{
+    "_id" : ObjectId("5f6c880dfa878391a81a869e"),
+    "user_googleId" : "114688952589238491799",
+    "pollId" : "d529bb62-9ae1-46f1-8d78-71284f987f12",
+    "ques" : "Who will win the IPL 2020?",
+    "options" : "CSK\r\nMI\r\nRCB\r\nSRH\r\nRR\r\nDC\r\nKXIP",
+    "__v" : 0
+}
+
+/* 2 */
+{
+    "_id" : ObjectId("5f6c8854fa878391a81a869f"),
+    "user_googleId" : "114688952589238491799",
+    "pollId" : "ba03128d-edce-49ac-858c-e0b486c6a3f4",
+    "ques" : "Who is the wisest man on the planet?",
+    "options" : "Narendra Modi\r\nDonald Trump\r\nCal Newport\r\nSeth Godins\r\nAbhinav Barve ;--;",
+    "__v" : 0
+}
+
+/* 3 */
+{
+    "_id" : ObjectId("5f6c8870fa878391a81a86a0"),
+    "user_googleId" : "114688952589238491799",
+    "pollId" : "b6e846c3-aeca-42f0-9457-088123169de4",
+    "ques" : "Can you buy me a coffee?",
+    "options" : "What??\r\nYes, Sure\r\nNope\r\n",
+    "__v" : 0
+}
+
+/* 4 */
+{
+    "_id" : ObjectId("5f6c8893fa878391a81a86a1"),
+    "user_googleId" : "114688952589238491799",
+    "pollId" : "4310d6e2-2215-49ab-b0bb-c7c9050e31ab",
+    "ques" : "How many pull-ups can you do in one round?",
+    "options" : "<10\r\n10-20\r\n20-50\r\n>50",
+    "__v" : 0
+}
+
+/* 5 */
+{
+    "_id" : ObjectId("5f6c88c0fa878391a81a86a2"),
+    "user_googleId" : "114688952589238491799",
+    "pollId" : "8d1a80f5-843a-43d5-8c2d-a815461e3851",
+    "ques" : "Which has the better music Hollywood or Bollywood?",
+    "options" : "Hollywood\r\nBollywood\r\nNeither\r\nTollywood",
+    "__v" : 0
+}
+
+/* 6 */
+{
+    "_id" : ObjectId("5f6c891bfa878391a81a86a3"),
+    "user_googleId" : "114688952589238491799",
+    "pollId" : "891ad723-29fc-4f0f-835f-c85b039b82e0",
+    "ques" : "Should Pakistan be blacklisted by the FATF?",
+    "options" : "No, it shall remain in the greylist.\r\nYes, it should be blacklisted for obvious reasons.\r\nThe FATF blacklist is insignificant.\r\n",
+    "__v" : 0
+}
+
+/* 7 */
+{
+    "_id" : ObjectId("5f6c894efa878391a81a86a4"),
+    "user_googleId" : "114688952589238491799",
+    "pollId" : "13811ef2-5d84-411f-a296-a38c654f9b75",
+    "ques" : "Is listening to an audiobook a great option?",
+    "options" : "Always\r\nSomestimes\r\nNever",
+    "__v" : 0
+}
+
+/* 8 */
+{
+    "_id" : ObjectId("5f6c8971fa878391a81a86a5"),
+    "user_googleId" : "114688952589238491799",
+    "pollId" : "9cf027d4-79bd-42b5-8fcd-63737baf9497",
+    "ques" : "What is your favorite food?",
+    "options" : "North Indian \r\nSouth Indian \r\nItalian \r\nJapanese",
+    "__v" : 0
+}
+
+/* 9 */
+{
+    "_id" : ObjectId("5f6c89a5fa878391a81a86a6"),
+    "user_googleId" : "114688952589238491799",
+    "pollId" : "28631060-2558-4f98-b886-8c031b0f1f7b",
+    "ques" : "What is your favorite sport?",
+    "options" : "Cricket\r\nFootball\r\nHockey\r\nKabaddi\r\nBadminton\r\nTennis",
+    "__v" : 0
+}
+
+/* 10 */
+{
+    "_id" : ObjectId("5f6c89c8fa878391a81a86a7"),
+    "user_googleId" : "114688952589238491799",
+    "pollId" : "7c5a70f5-b53c-477b-930c-c20186c584bf",
+    "ques" : "How many litres of water do you drink in a day?",
+    "options" : "<1\r\n1-2\r\n2-5\r\n>5",
+    "__v" : 0
+}
+
+/* 11 */
+{
+    "_id" : ObjectId("5f6c9387ac687636ec91fca0"),
+    "user_googleId" : "114688952589238491799",
+    "pollId" : "bfdad24a-0083-47d0-81f1-947e94558322",
+    "ques" : "When will the no of COVID-19 cases come to saturation in the world?",
+    "options" : "<2 months\r\n2-5 months\r\n5 months- 1 year\r\nmore than a year",
+    "__v" : 0
+}
+
+/* 12 */
+{
+    "_id" : ObjectId("5f6c9635ac687636ec91fca1"),
+    "user_googleId" : "114688952589238491799",
+    "pollId" : "0cf1661e-e255-4fdc-811d-98ddf171fe3c",
+    "ques" : "How to make a new poll?",
+    "options" : "1. Login through you google account.\r\n2. A poll list will be displayed. \r\n3. Click on you account name in the navigation bar. A dropown list will appear.\r\n4. Click on <strong>New Poll</strong>.\r\n5. Fill in the required details.\r\n6.Click on <strong>Make a Poll.</strong>\r\n7. Go to <strong>My Polls</strong> in the same dropdown menu to see the polls made by you.",
+    "__v" : 0
+}
+
+/* 13 */
+{
+    "_id" : ObjectId("5f6dc66288b986c65498051c"),
+    "user_googleId" : "114688952589238491799",
+    "pollId" : "c9ddff9c-08a3-4de0-b49c-16bf05ce6e47",
+    "ques" : "Which is your favorite Sherlock Holmes Case?",
+    "options" : "The Red Headed League\r\nThe Second Stain\r\nThe Final Problem\r\nThe Three Students\r\nThe Six Napoleans\r\nThe Naval Treaty\r\nThe Greek Interpreter",
+    "__v" : 0
+} -->

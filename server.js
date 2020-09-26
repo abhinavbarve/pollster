@@ -16,7 +16,6 @@ const passportLocalMongoose = require("passport-local-mongoose")
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const findOrCreate = require("mongoose-findorcreate")
 const randomcolor = require("randomcolor");
-console.log(randomcolor())
 
 // view engine setup
 app.set('view engine', 'ejs');
@@ -66,7 +65,7 @@ const pollSchema = new mongoose.Schema({
 		required: true
 	},
 	options: {
-		type: String, 
+		type: Array, 
 		required: true
 	}
 })
@@ -113,16 +112,17 @@ passport.use(new GoogleStrategy({                    // comes from passport-goog
 	}
 ));
 
-
+// pollster landing page
 app.get("/", (req, res) => {
 	(req.isAuthenticated()) ? (res.redirect("/pollster")) : (res.render("home", { title: "Home" }))
 });
 
-
+// google auth
 app.get("/auth/google",                              // this will use the new GoogleStrategy to authenticate the user declared above. 
 	passport.authenticate("google", { scope: ["profile"] }));
 
 
+// pollster home/main page
 app.get("/pollster", (req, res) => {                 // pollster main page 
 	Poll.find({}, (err, foundPolls) => {
 		if (!err) {
@@ -137,6 +137,7 @@ app.get("/pollster", (req, res) => {                 // pollster main page
 	});
 })
 
+// google auth redirect
 app.get("/auth/google/pollster",                     // google redirect link upon authentication.
 	passport.authenticate("google", { failureRedirect: "/" }),
 	function (req, res) {
@@ -145,22 +146,35 @@ app.get("/auth/google/pollster",                     // google redirect link upo
 	}
 );
 
+// login page
 app.get("/login", (req, res) => {
 	(req.isAuthenticated()) ? res.redirect("/pollster") : (res.render("login", { title: "Login" }));
 })
 
+// get newpoll form
 app.get("/newpoll", (req, res) => {
 	// (req.isAuthenticated()) ? res.render("newpoll",{title: "New Poll", acc_name : acc_name, acc_pic : acc_pic}) : (res.redirect("/login"));
 	res.render("newpoll", { title: "New Poll", acc_name: acc_name, acc_pic: acc_pic });
 })
 
+
+// make a new poll
 app.post("/newpoll", (req, res) => {
-	
+	let options = [];
+	console.log(req.body.options);
+	let option_names = req.body.options.trim().split("\r\n");
+	for (let i = 0; i <= option_names.length; i++){
+		options.push({
+			color: randomcolor(),
+			name: option_names[i],
+			score: 0
+		})
+	}
 	const newPoll = new Poll({
 		user_googleId: googleId, 
 		pollId: uuidv4(),
 		ques: req.body.ques,
-		options: req.body.options
+		options: options
 	})
 
 	newPoll.save((err) => {
@@ -174,6 +188,8 @@ app.post("/newpoll", (req, res) => {
 
 })
 
+
+// get user made polls
 app.get("/mypolls", (req, res) => {
 	Poll.find({user_googleId: googleId}, (err, foundPolls) => {
 		if (!err) {
@@ -189,16 +205,14 @@ app.get("/mypolls", (req, res) => {
 	})
 })
 
-app.get("/logout", (req, res) => {
-	req.logout();
-	res.redirect("/");
-})
-
+// vote for a poll
+let cur_pollId = ""
 app.get("/polls/:pollId", (req, res) => {
-	Poll.find({ pollId: req.params.pollId }, (err, foundPoll) => {
+	Poll.findOne({ pollId: req.params.pollId }, (err, foundPoll) => {
 		if (!err) {
 			if (foundPoll) {
-				res.render('poll-page', {title: "Poll", acc_Id: googleId , acc_name: acc_name, acc_pic: acc_pic, poll: foundPoll[0]});
+				cur_pollId = foundPoll.pollId
+				res.render('poll-page', {title: "Poll", acc_Id: googleId , acc_name: acc_name, acc_pic: acc_pic, poll: foundPoll});
 			} else {
 				res.send("No poll matches with given Id.")
 			}
@@ -207,7 +221,56 @@ app.get("/polls/:pollId", (req, res) => {
 			res.send("Oops! There was an error in making this poll, try again.")
 		}
 	})
+})
+
+
+// database fetch call
+app.get("/database/" + process.env.DATABASE_URL + "/pollData", (req, res) => {
+	Poll.find({ pollId: cur_pollId }, (err, foundPoll) => {
+		if (!err) {
+			if (foundPoll) {
+				res.send(foundPoll)
+			} else {
+				console.log("else is executed")
+				res.send([])
+			}
+		} else {
+			console.log(err)
+		}
+	})
+})
+
+// pollster logout
+app.get("/logout", (req, res) => {
+	req.logout();
+	res.redirect("/");
+})
+
+app.post("/polls/submitpoll", (req, res) => {
+	let opt_sel = req.body.poll_option
 	
+	Poll.findOne({ pollId: cur_pollId }, (err, foundPoll) => {
+		if (!err) {
+			if (foundPoll) {
+				foundPoll.options.forEach((each) => {
+					if (each.name === opt_sel) {
+						each.score += 1;
+					}
+				})
+
+				cur_poll = new Poll(foundPoll);
+				cur_poll.save((err) => { if (!err) { res.redirect("/polls/" + cur_pollId) } else { res.send(err) } })
+			
+			} else {
+				res.write("No such poll found.")
+				res.redirect("/polls")
+			}
+		} else {
+			console.log(err);
+		}
+	})
+	
+
 })
 
 // Listen on Port 8080
