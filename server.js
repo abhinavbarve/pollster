@@ -161,13 +161,22 @@ app.get("/newpoll", (req, res) => {
 	// (req.isAuthenticated()) ? res.render("newpoll",{title: "New Poll", acc_name : acc_name, acc_pic : acc_pic}) : (res.redirect("/login"));
 	res.render("newpoll", { title: "New Poll", acc_name: acc_name, acc_pic: acc_pic });
 })
-
-
+	
+function refine(req) {                               // removes extra lines and spaces
+	let res = []
+	req.trim().split("\r\n").map((each) => {
+		if (each !== "") {
+			res.push(each.trim())
+		}
+	})
+	return res
+}
 // make a new poll
 app.post("/newpoll", (req, res) => {
 	let options = [];
-	let option_names = req.body.options.split("\r\n");
-	for (let i = 0; i <= option_names.length; i++){
+	let option_names = refine(req.body.options);
+	
+	for (let i = 0; i < option_names.length; i++){
 		options.push({
 			color: randomcolor(),
 			name: option_names[i],
@@ -259,12 +268,12 @@ app.post("/polls/submitpoll", (req, res) => {
 						}
 					});	
 					foundPoll.users_polled.push(googleId)
+					cur_poll = new Poll(foundPoll);
+					cur_poll.save((err) => { if (!err) { res.redirect("/polls/" + cur_pollId) } else { res.send(err) } })
 				} else {
-					res.send( "<h3>You can vote only once. <a href='/polls/" + cur_pollId + "'>Go Back</h3>")
+					console.log("you can vote only once.")
+					res.render("vote_once", {})
 				}
-
-				cur_poll = new Poll(foundPoll);
-				cur_poll.save((err) => { if (!err) { res.redirect("/polls/" + cur_pollId) } else { res.send(err) } })
 			
 			} else {
 				res.write("No such poll found.");
