@@ -16,6 +16,7 @@ const passportLocalMongoose = require("passport-local-mongoose")
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const findOrCreate = require("mongoose-findorcreate")
 const randomcolor = require("randomcolor");
+const alert = require("alert")
 
 // view engine setup
 app.set('view engine', 'ejs');
@@ -52,7 +53,7 @@ const userSchema = new mongoose.Schema({             // mongoose schema [compuls
 });
 
 const pollSchema = new mongoose.Schema({
-	user_googleId: {
+	maker_googleId: {
 		type: String,
 		required: true
 	},
@@ -65,6 +66,10 @@ const pollSchema = new mongoose.Schema({
 		required: true
 	},
 	options: {
+		type: Array, 
+		required: true
+	}, 
+	users_polled: {
 		type: Array, 
 		required: true
 	}
@@ -161,8 +166,7 @@ app.get("/newpoll", (req, res) => {
 // make a new poll
 app.post("/newpoll", (req, res) => {
 	let options = [];
-	console.log(req.body.options);
-	let option_names = req.body.options.trim().split("\r\n");
+	let option_names = req.body.options.split("\r\n");
 	for (let i = 0; i <= option_names.length; i++){
 		options.push({
 			color: randomcolor(),
@@ -171,18 +175,19 @@ app.post("/newpoll", (req, res) => {
 		})
 	}
 	const newPoll = new Poll({
-		user_googleId: googleId, 
+		maker_googleId: googleId, 
 		pollId: uuidv4(),
 		ques: req.body.ques,
-		options: options
+		options: options, 
+		users_polled: []
 	})
 
 	newPoll.save((err) => {
 		if (!err) {
-			res.send("A new Poll was made.")
+			res.send("A new poll has been registered.")
 		} else {
 			console.log(err)
-			res.send("There was some error in making a new poll. Please try again.")
+			res.send("There was some error in making a new poll. Please <a href='http://localhost:8080/login'>login</a> again.")
 		}
 	})
 
@@ -231,7 +236,6 @@ app.get("/database/" + process.env.DATABASE_URL + "/pollData", (req, res) => {
 			if (foundPoll) {
 				res.send(foundPoll)
 			} else {
-				console.log("else is executed")
 				res.send([])
 			}
 		} else {
@@ -240,11 +244,6 @@ app.get("/database/" + process.env.DATABASE_URL + "/pollData", (req, res) => {
 	})
 })
 
-// pollster logout
-app.get("/logout", (req, res) => {
-	req.logout();
-	res.redirect("/");
-})
 
 app.post("/polls/submitpoll", (req, res) => {
 
@@ -253,11 +252,16 @@ app.post("/polls/submitpoll", (req, res) => {
 	Poll.findOne({ pollId: cur_pollId }, (err, foundPoll) => {
 		if (!err) {
 			if (foundPoll) {
-				foundPoll.options.forEach((each) => {
-					if (each.name === opt_sel) {
-						each.score += 1;
-					}
-				})
+				if (foundPoll.users_polled.includes(googleId) === false) {
+					foundPoll.options.forEach((each) => {
+						if (each.name === opt_sel) {
+							each.score += 1;
+						}
+					});	
+					foundPoll.users_polled.push(googleId)
+				} else {
+					res.send( "<h3>You can vote only once. <a href='/polls/" + cur_pollId + "'>Go Back</h3>")
+				}
 
 				cur_poll = new Poll(foundPoll);
 				cur_poll.save((err) => { if (!err) { res.redirect("/polls/" + cur_pollId) } else { res.send(err) } })
@@ -273,6 +277,11 @@ app.post("/polls/submitpoll", (req, res) => {
 
 })
 
+// pollster logout
+app.get("/logout", (req, res) => {
+	req.logout();
+	res.redirect("/");
+})
 // Listen on Port 8080
 app.listen(8080, (req,res)=>{
   console.log("Server is running on port 8080.")

@@ -4,7 +4,7 @@
     <div id="poll-container" class="container-fluid">
         <div id="poll-box">
             <form class="poll-form" method="post" action="/polls/submitpoll">
-                <h3><%=poll.ques%></h1>
+                <h3><%=poll.ques%></h3>
                 <select name="poll_option" id="poll-page-opt">
                         <%poll.options.forEach((each) => { %>
                                 <option class="poll-page-opt"><%=each.name%></li>
@@ -12,6 +12,7 @@
                 </select>
                 <button class="btn btn-dark" type="submit">Submit</button>
             </form>
+            <a href= <%="https://twitter.com/intent/tweet?text="+ encodeURI(poll.ques + "\n") + "https://abhinav-barve.herokuapp.com" %> target="_blank"><button class="btn btn-primary">Share on Twitter</button></a>
             <div class="poll-result">
                 <canvas id="result-chart" height="20vh" width="30vw"></canvas>
             </div>
