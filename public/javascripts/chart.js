@@ -1,7 +1,7 @@
 $(document).ready(() => {
     async function getData() {
 
-        await fetch('http://localhost:8080/database/database190310392199/pollData')
+        await fetch('http://localhost:3000/database/database190310392199/pollData')
             .then(response => {
                 response.json().then((result) => {
                     let poll_data = result[0]

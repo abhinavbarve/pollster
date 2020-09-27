@@ -6,7 +6,6 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "alert": "^5.0.5",
     "body-parser": "^1.19.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
@@ -25,7 +24,7 @@
     "uuid": "^8.3.0"
   },
   "main": "app.js",
-  "author": "",
+  "author": "Abhinav Barve",
   "license": "ISC",
-  "description": ""
+  "description": "This is a voting app."
 }
