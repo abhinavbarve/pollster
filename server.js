@@ -127,7 +127,7 @@ app.get("/auth/google",                              // this will use the new Go
 app.get("/pollster", (req, res) => {                 // pollster main page 
 	Poll.find({}, (err, foundPolls) => {
 		if (!err) {
-			(req.isAuthenticated()) ? (res.render("pollster", { title: "Poll", acc_name: acc_name, acc_pic: acc_pic, polls: (foundPolls ? foundPolls : []) })) : (res.redirect("/"))
+			res.render("pollster", { title: "Poll", acc_name: acc_name, acc_pic: acc_pic, polls: (foundPolls ? foundPolls : []), login: (req.isAuthenticated() ? "true" : "false")})
 		} else {
 			console.log(err)
 		}
@@ -254,7 +254,7 @@ app.post("/polls/submitpoll", (req, res) => {
 					})
 
 				} else {
-					res.render("vote_once", { cur_pollId: cur_pollId })
+					res.render("vote_once", { cur_pollId: cur_pollId, title: "Alert" })
 				}
 
 			} else {

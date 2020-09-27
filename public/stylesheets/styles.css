@@ -263,9 +263,12 @@ nav{
   border-radius: 10px;
 }
 
-
-
-
+.alert-page{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
 
 

@@ -1,2 +1,11 @@
-<h3>You can vote only once.</h3>
-<a href=<%="/polls/"+cur_pollId%>>Go Back</a>
+<%-include("partials/header")%>
+
+<div class="alert-page">
+    <h3>You can vote only once.</h3>
+    <form action="/pollster" method="get">
+        <button class="btn btn-primary">Go Back</button>
+        <button class="btn btn-dark">See more Polls</button>
+    </form>
+</div>
+
+<%-include("partials/footer")%>
