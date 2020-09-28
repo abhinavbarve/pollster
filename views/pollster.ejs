@@ -1,9 +1,5 @@
 <%-include("partials/header")%>
-<%if(<%=login%> === "true"){%>
-    <%-include('partials/login-nav.ejs')%>
-<%}else{%>
-    <%-include('partials/navbar.ejs')%>
-<%}%>
+<%-include("partials/navbar")%> 
 
     <div id="poll-page">
         
@@ -17,7 +13,6 @@
                 <%})%>
             </div>
         </div>
-    
     </div>
 
 <%- include("partials/footer") -%>

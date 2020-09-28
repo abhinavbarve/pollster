@@ -84,7 +84,7 @@ nav{
   padding: 50px 0px;
 }
 
-.poll-example{
+.home-btns{
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -135,13 +135,15 @@ nav{
   background-color: rgb(240, 240, 240);
   border-radius: 10px;
 }
-.poll-btn{
+.home-btn{
   margin: 10px 0px 0px;
   width: 80%;
 }
-.poll-btn:hover{
-  background-color: #ff4b5c;
+.home-btn:hover, #home button:hover{
+  color: #fff;
+  background: #ff4b5c;
 }
+
 
 .sign-in-buttons{
   padding:10px 0px;
@@ -203,18 +205,13 @@ nav{
 }
 
 
-
-
 .footer-link{
     color: black;
     padding:5px 10px
 }
 
 
-
-
 /* poll-page */
-
 
 #poll-container{
   padding: 10vh 0px;

@@ -6,40 +6,44 @@ let googleId
 let cur_pollId = ""
 // -------------
 require("dotenv").config();
-const express = require('express')
+const express = require("express")
 const app = express()
-const body_parser = require('body-parser');
+const body_parser = require("body-parser");
 const mongoose = require("mongoose")
 const session = require("express-session")
 const passport = require("passport")
 const passportLocalMongoose = require("passport-local-mongoose")
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const findOrCreate = require("mongoose-findorcreate")
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require("uuid");
 const randomcolor = require("randomcolor");
+const alert = require("alert");
+const ip = require('express-ip');
 
 // view engine setup
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
+
+app.use(ip().getIpInfoMiddleware);
 // body_parser
 app.use(body_parser.urlencoded({ extended: true }))
 
 // declare public files
-app.use(express.static('public'));
+app.use(express.static("public"));
 
-app.use(session({                                    // comes from express-session [starts a session]                     
+app.use(session({                                                    // comes from express-session [starts a session]                     
 	secret: process.env.SECRET,
 	saveUninitialized: false,
 	resave: false
 }));
 
-app.use(passport.initialize())                       // initialize passport
-app.use(passport.session())                          // use passport for dealing with the sessions
+app.use(passport.initialize())                                       // initialize passport
+app.use(passport.session())                                          // use passport for dealing with the sessions
 
 
 mongoose.connect(process.env.DATABASE_KEY, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }) // connect to the database.
 
-const userSchema = new mongoose.Schema({             // mongoose schema [compulsarily]
+const userSchema = new mongoose.Schema({                             // mongoose schema [compulsarily]
 	username: {
 		type: String,
 		required: true
@@ -71,15 +75,15 @@ const pollSchema = new mongoose.Schema({
 })
 
 
-userSchema.plugin(passportLocalMongoose)             // use the passport-local-mongoose package
-userSchema.plugin(findOrCreate)                      // use the mongoose-findorcreate package
+userSchema.plugin(passportLocalMongoose)                             // use the passport-local-mongoose package
+userSchema.plugin(findOrCreate)                                      // use the mongoose-findorcreate package
 
 
-const User = new mongoose.model("User", userSchema); // user model
-const Poll = new mongoose.model("Poll", pollSchema); // poll question model
+const User = new mongoose.model("User", userSchema);                 // user model
+const Poll = new mongoose.model("Poll", pollSchema);                 // poll question model
 
 
-passport.use(User.createStrategy());                 // comes from passport-local-mongoose
+passport.use(User.createStrategy());                                 // comes from passport-local-mongoose
 
 // passport.serializeUser(function (user, done) {
 // 	done(null, user.id);
@@ -93,11 +97,11 @@ passport.use(User.createStrategy());                 // comes from passport-loca
 
 // the following way of serializing and de-serializing is used for testing purposes.
 
-passport.serializeUser(User.serializeUser());        // (comes from passport-local-mongoose)
-passport.deserializeUser(User.deserializeUser());    // (comes from passport-local-mongoose)
+passport.serializeUser(User.serializeUser());                        // (comes from passport-local-mongoose)
+passport.deserializeUser(User.deserializeUser());                    // (comes from passport-local-mongoose)
 
 
-passport.use(new GoogleStrategy({                    // comes from passport-google-oauth20 strategy (this code has to be put after "starting of the session and other setup" and before the "routes". )
+passport.use(new GoogleStrategy({                                    // comes from passport-google-oauth20 strategy (this code has to be put after "starting of the session and other setup" and before the "routes". )
 	clientID: process.env.GOOGLE_CLIENT_ID,
 	clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 	callbackURL: "http://localhost:3000/auth/google/pollster",
@@ -115,19 +119,19 @@ passport.use(new GoogleStrategy({                    // comes from passport-goog
 
 // pollster landing page
 app.get("/", (req, res) => {
-	(req.isAuthenticated()) ? (res.redirect("/pollster")) : (res.render("home", { title: "Home" }))
+	(req.isAuthenticated()) ? (res.redirect("/pollster")) : (res.render("home", { title: "Home", login: req.isAuthenticated()}))
 });
 
 // google auth
-app.get("/auth/google",                              // this will use the new GoogleStrategy to authenticate the user declared above. 
+app.get("/auth/google",                                               
 	passport.authenticate("google", { scope: ["profile"] }));
 
 
 // pollster home/main page
-app.get("/pollster", (req, res) => {                 // pollster main page 
+app.get("/pollster", (req, res) => {                 				
 	Poll.find({}, (err, foundPolls) => {
 		if (!err) {
-			res.render("pollster", { title: "Poll", acc_name: acc_name, acc_pic: acc_pic, polls: (foundPolls ? foundPolls : []), login: (req.isAuthenticated() ? "true" : "false")})
+			res.render("pollster", { title: "Poll", acc_name: acc_name, acc_pic: acc_pic, polls: (foundPolls ? foundPolls : []), login: (req.isAuthenticated() ? true : false)})
 		} else {
 			console.log(err)
 		}
@@ -135,7 +139,7 @@ app.get("/pollster", (req, res) => {                 // pollster main page
 })
 
 // google auth redirect
-app.get("/auth/google/pollster",                     // google redirect link upon authentication.
+app.get("/auth/google/pollster",                    				// google redirect link upon authentication.
 
 	passport.authenticate("google", { failureRedirect: "/" }),
 	function (req, res) { res.redirect("/pollster") } 				// Successful authentication, redirect to pollster.
@@ -145,20 +149,22 @@ app.get("/auth/google/pollster",                     // google redirect link upo
 
 // login page
 app.get("/login", (req, res) => {
-	(req.isAuthenticated()) ? res.redirect("/pollster") : (res.render("login", { title: "Login" }));
+	(req.isAuthenticated()) ? res.redirect("/pollster") : (res.render("login", {
+		title: "Login"
+	}));
 })
 
 
 // get newpoll form
 app.get("/newpoll", (req, res) => {
-	(req.isAuthenticated()) ? res.render("newpoll", { title: "New Poll", acc_name: acc_name, acc_pic: acc_pic }) : (res.redirect("/login"));
+	(req.isAuthenticated()) ? res.render("newpoll", { title: "New Poll", acc_name: acc_name, acc_pic: acc_pic, login: req.isAuthenticated() }) : (res.redirect("/login"));
 })
 
 
 // make a new poll
 app.post("/newpoll", (req, res) => {
 	let options = [];
-	function refine(req) {                               // removes extra lines and spaces
+	function refine(req) {                                               // removes extra lines and spaces
 
 		let res = []
 		req.trim().split("\r\n").map((each) => { if (each !== "") { res.push(each.trim()) } });
@@ -178,7 +184,7 @@ app.post("/newpoll", (req, res) => {
 
 	newPoll.save((err) => {
 		if (!err) {
-			res.send("A new poll has been registered.")
+			res.redirect("/polls/"+newPoll.pollId)
 		} else {
 			console.log(err)
 			res.send("There was some error in making a new poll. Please <a href='http://localhost:3000/login'>login</a> again.")
@@ -193,7 +199,7 @@ app.get("/mypolls", (req, res) => {
 
 	Poll.find({ user_googleId: googleId }, (err, foundPolls) => {
 		if (!err) {
-			res.render("mypolls", { title: "My Poll", acc_Id: googleId, acc_name: acc_name, acc_pic: acc_pic, acc_polls: (foundPolls ? foundPolls : []) });
+			res.render("mypolls", { title: "My Poll", acc_Id: googleId, acc_name: acc_name, acc_pic: acc_pic, acc_polls: (foundPolls ? foundPolls : []), login: req.isAuthenticated()});
 		} else {
 			console.log(err);
 			res.send("Oops! There was an error in making this poll, try again.")
@@ -209,7 +215,7 @@ app.get("/polls/:pollId", (req, res) => {
 		if (!err) {
 			if (foundPoll) {
 				cur_pollId = foundPoll.pollId
-				res.render('poll-page', { title: "Poll", acc_Id: googleId, acc_name: acc_name, acc_pic: acc_pic, poll: foundPoll });
+				res.render("poll-page", { title: "Poll", acc_Id: googleId, acc_name: acc_name, acc_pic: acc_pic, poll: foundPoll, login: req.isAuthenticated()});
 			} else {
 				res.send("No poll matches with given Id.")
 			}
@@ -234,18 +240,21 @@ app.get("/database/" + process.env.DATABASE_URL + "/pollData", (req, res) => {
 	})
 })
 
-
 app.post("/polls/submitpoll", (req, res) => {
-
+	console.log(req.connection.remoteAddress)
 	let opt_sel = req.body.poll_option
 	Poll.findOne({ pollId: cur_pollId }, (err, foundPoll) => {
 		if (!err) {
 			if (foundPoll) {
 				if (foundPoll.voted_by.includes(googleId) === false) {
 
-					foundPoll.options.forEach((each) => { if (each.name === opt_sel) { each.score += 1 } });	// add 1 to score
-					foundPoll.voted_by.push(googleId)															// add user to voted list.
-					new Poll(foundPoll).save((err) => {                                                         // save the current poll
+					foundPoll.options.forEach((each) => {           // add 1 to score // add user to voted list.
+						if (each.name === opt_sel) {
+							each.score += 1;
+							foundPoll.voted_by.push(googleId)
+						}
+					});	
+					new Poll(foundPoll).save((err) => {             // save the current poll
 						if (!err) {
 							res.redirect("/polls/" + cur_pollId)
 						} else {
@@ -254,7 +263,7 @@ app.post("/polls/submitpoll", (req, res) => {
 					})
 
 				} else {
-					res.render("vote_once", { cur_pollId: cur_pollId, title: "Alert" })
+					alert("You can vote only once")
 				}
 
 			} else {
