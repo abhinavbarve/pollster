@@ -100,7 +100,7 @@ passport.deserializeUser(User.deserializeUser());                    // (comes f
 passport.use(new GoogleStrategy({                                    // comes from passport-google-oauth20 strategy (this code has to be put after "starting of the session and other setup" and before the "routes". )
 	clientID: process.env.GOOGLE_CLIENT_ID,
 	clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-	callbackURL: "http://localhost:3000/auth/google/polls",
+	callbackURL: "https://pollster-org.herokuapp.com/auth/google/polls",
 	userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
 },
 	(accessToken, refreshToken, profile, cb) => {
@@ -183,7 +183,7 @@ app.post("/newpoll", (req, res) => {
 			res.redirect("/polls/"+newPoll.pollId)
 		} else {
 			console.log(err)
-			res.send("There was some error in making a new poll. Please <a href='http://localhost:3000/login'>login</a> again.")
+			res.send("There was some error in making a new poll. Please <a href='http://pollster-org.herokuapp.com/login'>login</a> again.")
 		}
 	})
 
