@@ -81,20 +81,20 @@ const Poll = new mongoose.model("Poll", pollSchema);                 // poll que
 
 passport.use(User.createStrategy());                                 // comes from passport-local-mongoose
 
-// passport.serializeUser(function (user, done) {
-// 	done(null, user.id);
-// });
+passport.serializeUser(function (user, done) {
+	done(null, user.id);
+});
 
-// passport.deserializeUser(function (id, done) {
-// 	User.findById(id, function (err, user) {
-// 		done(err, user);
-// 	});
-// });
+passport.deserializeUser(function (id, done) {
+	User.findById(id, function (err, user) {
+		done(err, user);
+	});
+});
 
 // the following way of serializing and de-serializing is used for testing purposes.
 
-passport.serializeUser(User.serializeUser());                        // (comes from passport-local-mongoose)
-passport.deserializeUser(User.deserializeUser());                    // (comes from passport-local-mongoose)
+// passport.serializeUser(User.serializeUser());                        // (comes from passport-local-mongoose)
+// passport.deserializeUser(User.deserializeUser());                    // (comes from passport-local-mongoose)
 
 
 passport.use(new GoogleStrategy({                                    // comes from passport-google-oauth20 strategy (this code has to be put after "starting of the session and other setup" and before the "routes". )
