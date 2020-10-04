@@ -1,4 +1,3 @@
-// -------------
 // global variables
 let acc_name
 let acc_pic
@@ -18,13 +17,10 @@ const findOrCreate = require("mongoose-findorcreate")
 const { v4: uuidv4 } = require("uuid");
 const randomcolor = require("randomcolor");
 const alert = require("alert");
-const ip = require('express-ip');
 
 // view engine setup
 app.set("view engine", "ejs");
 
-
-app.use(ip().getIpInfoMiddleware);
 // body_parser
 app.use(body_parser.urlencoded({ extended: true }))
 
@@ -104,7 +100,7 @@ passport.deserializeUser(User.deserializeUser());                    // (comes f
 passport.use(new GoogleStrategy({                                    // comes from passport-google-oauth20 strategy (this code has to be put after "starting of the session and other setup" and before the "routes". )
 	clientID: process.env.GOOGLE_CLIENT_ID,
 	clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-	callbackURL: "http://localhost:3000/auth/google/pollster",
+	callbackURL: "http://localhost:3000/auth/google/polls",
 	userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
 },
 	(accessToken, refreshToken, profile, cb) => {
@@ -119,7 +115,7 @@ passport.use(new GoogleStrategy({                                    // comes fr
 
 // pollster landing page
 app.get("/", (req, res) => {
-	(req.isAuthenticated()) ? (res.redirect("/pollster")) : (res.render("home", { title: "Home", login: req.isAuthenticated()}))
+	(req.isAuthenticated()) ? (res.redirect("/polls")) : (res.render("home", { title: "Home", login: req.isAuthenticated()}))
 });
 
 // google auth
@@ -128,10 +124,10 @@ app.get("/auth/google",
 
 
 // pollster home/main page
-app.get("/pollster", (req, res) => {                 				
+app.get("/polls", (req, res) => {                 				
 	Poll.find({}, (err, foundPolls) => {
 		if (!err) {
-			res.render("pollster", { title: "Poll", acc_name: acc_name, acc_pic: acc_pic, polls: (foundPolls ? foundPolls : []), login: (req.isAuthenticated() ? true : false)})
+			res.render("polls", { title: "Poll", acc_name: acc_name, acc_pic: acc_pic, polls: (foundPolls ? foundPolls : []), login: req.isAuthenticated() })
 		} else {
 			console.log(err)
 		}
@@ -139,17 +135,17 @@ app.get("/pollster", (req, res) => {
 })
 
 // google auth redirect
-app.get("/auth/google/pollster",                    				// google redirect link upon authentication.
+app.get("/auth/google/polls",                    				// google redirect link upon authentication.
 
 	passport.authenticate("google", { failureRedirect: "/" }),
-	function (req, res) { res.redirect("/pollster") } 				// Successful authentication, redirect to pollster.
+	function (req, res) { res.redirect("/polls") } 				// Successful authentication, redirect to polls.
 
 );
 
 
 // login page
 app.get("/login", (req, res) => {
-	(req.isAuthenticated()) ? res.redirect("/pollster") : (res.render("login", {
+	(req.isAuthenticated()) ? res.redirect("/polls") : (res.render("login", {
 		title: "Login"
 	}));
 })
@@ -241,13 +237,11 @@ app.get("/database/" + process.env.DATABASE_URL + "/pollData", (req, res) => {
 })
 
 app.post("/polls/submitpoll", (req, res) => {
-	console.log(req.connection.remoteAddress)
 	let opt_sel = req.body.poll_option
 	Poll.findOne({ pollId: cur_pollId }, (err, foundPoll) => {
 		if (!err) {
 			if (foundPoll) {
 				if (foundPoll.voted_by.includes(googleId) === false) {
-
 					foundPoll.options.forEach((each) => {           // add 1 to score // add user to voted list.
 						if (each.name === opt_sel) {
 							each.score += 1;
@@ -261,11 +255,9 @@ app.post("/polls/submitpoll", (req, res) => {
 							res.send(err)
 						}
 					})
-
 				} else {
 					alert("You can vote only once")
 				}
-
 			} else {
 				res.write("No such poll found.");
 				res.redirect("/polls");
@@ -274,7 +266,6 @@ app.post("/polls/submitpoll", (req, res) => {
 			console.log(err);
 		}
 	})
-
 })
 
 // pollster logout
