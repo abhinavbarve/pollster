@@ -279,3 +279,8 @@ app.get("/logout", (req, res) => {
 app.listen(process.env.PORT || 3000, (req, res) => {
 	console.log("Server is running on port 3000.")
 })
+
+
+app.get("/test", (req, res) => {
+	res.render("test", {title: "test", login: req.isAuthenticated()} )
+})

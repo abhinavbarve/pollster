@@ -7,7 +7,6 @@ body{
 .btn:focus, input:focus, a:hover{
   box-shadow: none;
   text-decoration: none;
-  color: #ff4b5c
 }
 
 #navbar{
@@ -213,17 +212,22 @@ nav{
 
 /* poll-page */
 
+#poll-container, #poll-box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #poll-container{
   padding: 10vh 0px;
+  flex-direction: column;
 }
 
 #poll-box{
   width: 80%;
   margin: auto;
   padding:2vh 5vw;
-  display: flex;
   flex-direction: row;
-  align-items: center;
   flex-wrap: wrap;
   background-color: rgb(201, 201, 201);
   border-radius: 10px ;
@@ -235,39 +239,39 @@ nav{
 }
 
 .poll-form select{
-  width: 50%;
+  width: 50%; 
 }
 
-#poll-page-opt, .poll-page-opt{
+#poll-page-opt  {
+  margin: 10px 0px;
   width:100%;
-  border-radius: 5px;
+  border-color: #555 ;
+  border-width: 2px;
+  border-radius: 2px;
   padding: 5px;
   outline: none;
 }
 
 #poll-box button{
   margin: 10px auto;
-}
-.poll-page-opt:hover{
-  background-color: rgb(218, 218, 218);
-  color: black;
+  border-width: 2px;
+  border-radius: 2px;
 }
 
+#poll-box button[type="submit"]:hover{
+  background: #ff4b5c;
+  color: #fff;
+  border-color: #ff0019;
+}
+
+option:hover{background-color:yellow;}
+
 .poll-result{
-  width: 50%;
+  width: 40%;
   margin:auto;
   background-color: rgb(255, 255, 255) ;
   border-radius: 10px;
 }
-
-.alert-page{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-
 
 
 
