@@ -193,16 +193,17 @@ app.post("/newpoll", (req, res) => {
 
 // My Polls
 app.get("/mypolls", (req, res) => {
-
 	Poll.find({ user_googleId: googleId }, (err, foundPolls) => {
 		if (!err) {
-			res.render("mypolls", { title: "My Poll", acc_Id: googleId, acc_name: acc_name, acc_pic: acc_pic, acc_polls: (foundPolls ? foundPolls : []), login: req.isAuthenticated()});
+			console.log(foundPolls)
+			req.isAuthenticated() ?
+			res.render("mypolls", { title: "My Poll", acc_Id: googleId, acc_name: acc_name, acc_pic: acc_pic, acc_polls: (foundPolls ? foundPolls : []), login: req.isAuthenticated() })
+			: res.redirect("/login");
 		} else {
 			console.log(err);
 			res.send("Oops! There was an error in making this poll, try again.")
 		}
 	})
-
 })
 
 
