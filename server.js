@@ -98,7 +98,7 @@ passport.deserializeUser(function (id, done) {
 // passport.deserializeUser(User.deserializeUser());                    // (comes from passport-local-mongoose)
 
 
-passport.use(new GoogleStrategy({                                    // comes from passport-google-oauth20 strategy (this code has to be put after "starting of the session and other setup" and before the "routes". )
+passport.use(new GoogleStrategy({                                       // comes from passport-google-oauth20 strategy (this code has to be put after "starting of the session and other setup" and before the "routes". )
 	clientID: process.env.GOOGLE_CLIENT_ID,
 	clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 	callbackURL: "https://pollster-org.herokuapp.com/auth/google/polls",
@@ -128,7 +128,7 @@ app.get("/auth/google",
 app.get("/polls", (req, res) => {                 				
 	Poll.find({}, (err, foundPolls) => {
 		if (!err) {
-			res.render("polls", { title: "Poll", acc_name: acc_name, acc_pic: acc_pic, polls: (foundPolls ? foundPolls : []), login: req.isAuthenticated() })
+			req.isAuthenticated() ? res.render("polls", { title: "Poll", acc_name: acc_name, acc_pic: acc_pic, polls: (foundPolls ? foundPolls : []), login: true }) : res.redirect("/login")
 		} else {
 			console.log(err)
 		}
