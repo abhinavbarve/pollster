@@ -1,40 +1,17 @@
 <%-include("partials/header")%>
 
-<div id="poll-container" class="container-fluid">
-    <div id="poll-box">
-        <div class="poll-form">
-            <form method="post" action="/polls/submitpoll">
-                <h4>Who will win the IPL 2020?</h4>
-                <select class="custom-select" id="poll-page-opt">
-                    <option selected disabled style=" display: none; padding:5px">Choose...</option>
-                    <option style="padding:5px" value="1">One</option>
-                    <option style="padding:5px" value="2">Two</option>
-                    <option style="padding:5px" value="3">Three</option>
-                </select>
-                <button class="btn btn-block btn-dark" type="submit">Submit</button>
-            </form>
-            <a href=<%="https://twitter.com/intent/tweet?text="%> target="_blank"><button class="btn btn-block btn-primary">Share on
-                    Twitter</button></a>
+<div id="poll-page">
+        
+        <div id="poll-list">
+            <h1 class="big-heading">Pollster.org</h1>
+            <h5>Below are the polls made by <strong>Abhinav Barve</strong>.</h5>
+            <h5>Select a poll to see the results or <a href="/newpoll"> make a new poll. </a></h5>
+            <div class="list">
+                
+                <a href=<%="/polls/" %>><button class="btn btn-block ques-btn"><%=ques.length > 40 ? ques.substring(0,40) + "..." : ques %> </button></a>
+                
+            </div>
         </div>
-        <div class="poll-result">
-            <canvas id="result-chart" height="20vh" width="30vw"></canvas>
-        </div>
-    </div>
-</div>
-<script>
-    let ctx = document.getElementById('result-chart').getContext('2d');
-    let resultchart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: [1, 2, 3, 4, 5],
-            datasets: [{
-                label: '# of Votes',
-                data: [10, 15, 23, 40, 11],
-                backgroundColor: ["red", "black", "pink", "green", "blue"],
-                borderWidth: 2
-            }]
-        }
-    });
-</script>
 
-<%-include("partials/footer")%>
+    </div>
+<%include("partials/footer")%>

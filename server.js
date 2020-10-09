@@ -282,5 +282,10 @@ app.listen(process.env.PORT || 3000, (req, res) => {
 
 
 app.get("/test", (req, res) => {
-	res.render("test", {title: "test", login: req.isAuthenticated()} )
+	res.render("test", { title: "test", ques: "this is a very very very very very very very very very very very very very very very very  long question."})
 })
+
+
+
+
+
