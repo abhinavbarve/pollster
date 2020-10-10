@@ -280,6 +280,9 @@ option:hover{background-color:yellow;}
   .make-new-poll > form > h1.display-4{
     font-size: 2rem
   }
+  .make-new-poll{
+    text-align: center;
+  }
 }
 
 
