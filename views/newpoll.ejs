@@ -1,25 +1,25 @@
 <%-include("partials/header")%>
-<%-include('partials/navbar')%>
+<%-include("partials/navbar")%>
 <div id="new-poll-page">
     <div class="jumbotron make-new-poll" >
         <form action="/newpoll" method="POST">
-            <h1 class="display-4">Make a new poll!</h1>
-            <p class="lead">An authenticated or unauthenticated user would be able to participate in this pole. 
-                The user can also add an "own" option of choice.</p>
+            <h1 class="display-4 display-8">Make a new poll!</h1>
+            <p class="lead">An authenticated <!-- or unauthenticated --> user would be able to participate in this pole. 
+                <!-- The user can also add an "own" option of choice. --></p>
             <hr class="my-4">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-default"><strong>QUESTION - </strong></span>
+                    <span class="input-group-text" ><strong>QUESTION - </strong></span>
                 </div>
                 <input type="text" name="ques" placeholder="Ask a relevant quesion here..." class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" required autocomplete="off">
             </div>
             <div class="input-group options-input">
                 <div class="input-group-prepend">
-                    <span class="input-group-text"><strong>Options <em>(seperated by line)</em></strong></span>
+                    <span class="input-group-text"><strong>Options<br><em>(seperated by line)</em></strong></span>
                 </div>
                 <textarea rows="5" name="options" placeholder="Options must be seperated by a line." class="form-control" aria-label="With textarea" required autocomplete="off"></textarea>
             </div>
-                <button class="btn btn-dark btn-lg" href="#" type="submit">Make a Poll!</a>
+                <button class="btn btn-dark btn-lg" href="/newpoll" type="submit">Make a Poll!</a>
         </form>
     </div>
 </div>

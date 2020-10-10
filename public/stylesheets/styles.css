@@ -261,12 +261,24 @@ option:hover{background-color:yellow;}
   .list{
     width: 95%
   }
+  .make-new-poll{
+    width: 90%;
+  }
+  .make-new-poll > form > h1.display-4{
+    font-size: 3rem
+  }
+  .make-new-poll > form > p.lead, .make-new-poll > form > div.input-group {
+    font-size: 1rem;
+  }
 }
 
 @media screen and (max-width: 800px){
   .big-heading{
     font-size: 2rem;
     font-weight: bolder;
+  }
+  .make-new-poll > form > h1.display-4{
+    font-size: 2rem
   }
 }
 
