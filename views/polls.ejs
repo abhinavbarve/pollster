@@ -9,7 +9,7 @@
             <h5>Select a poll to see the results or <a href="/newpoll"> make a new poll. </a></h5>
             <div class="list">
                 <%polls.reverse().forEach((each_poll)=>{%>
-                    <a href= <%="/polls/"+each_poll.pollId%> ><button class="btn btn-block ques-btn"><%=each_poll.ques%></button>
+                    <a href= <%="/polls/"+each_poll.pollId%> ><button class="btn btn-block ques-btn"><%=each_poll.ques.length > 50 ? each_poll.ques.substring(0,50) + "..." : each_poll.ques %></button>
                 <%})%>
             </div>
         </div>

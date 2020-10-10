@@ -283,6 +283,9 @@ option:hover{background-color:yellow;}
   .make-new-poll{
     text-align: center;
   }
+  #poll-list > h5, #poll-list > div > a > button.ques-btn{
+    font-size: 0.9rem
+  }
 }
 
 

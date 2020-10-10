@@ -23,4 +23,11 @@
         </form>
     </div>
 </div>
+<script>
+    let width = window.innerWidth
+    if (width <= 800 && new_ques && new_opt) {
+    document.getElementById("new-ques").innerHTML = "<strong>Ques</strong>"
+    document.getElementById("new-options").innerHTML = "<strong>Options</strong>"
+    }
+</script>
 <%-include("partials/footer")%>
