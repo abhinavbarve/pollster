@@ -257,7 +257,7 @@ app.post("/polls/submitpoll", (req, res) => {
 						}
 					})
 				} else {
-					alert("You can vote only once")
+					res.redirect("/polls/" + cur_pollId)
 				}
 			} else {
 				res.write("No such poll found.");
@@ -265,6 +265,18 @@ app.post("/polls/submitpoll", (req, res) => {
 			}
 		} else {
 			console.log(err);
+		}
+	})
+})
+
+// remove a poll
+app.post("/polls/removepoll", (req, res) => {
+	Poll.deleteOne({ pollId: cur_pollId }, function (err) {
+		if (!err) {
+			res.redirect("/polls")
+		} else {
+			console.log(err);
+			res.redirect("/polls")
 		}
 	})
 })
