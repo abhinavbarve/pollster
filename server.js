@@ -229,7 +229,7 @@ app.get("/database/" + process.env.DATABASE_URL + "/pollData", (req, res) => {
 	Poll.find({ pollId: cur_pollId }, (err, foundPoll) => {
 		if (!err) {
 
-			if (foundPoll) { res.send(foundPoll) } else { res.send([]) };
+			if (foundPoll) { res.send([foundPoll, googleId]) } else { res.send([]) };
 
 		} else {
 			console.log(err)

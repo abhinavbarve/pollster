@@ -18,8 +18,8 @@
             </div>
             <div class="poll-result">
                 <canvas id="result-chart" height="20vh" width="30vw"></canvas>
-                <form action="/polls/removepoll" method="post" >
-                    <button style="width: 80%" class="btn btn-dark" type="submit">Remove this Poll</button>    
+                <form id="delete-poll" style="display: none;" action="/polls/removepoll" method="post" >
+                    <button style="width: 80%;" class="btn btn-dark" type="submit">Remove this Poll</button>    
                 </form>
             </div>
         </div>
