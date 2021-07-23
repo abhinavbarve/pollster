@@ -4,7 +4,7 @@ $(document).ready(() => {
         await fetch('https://pollster-org.herokuapp.com/database/database190310392199/pollData')
             .then(response => {
                 response.json().then((result) => {
-                    let poll_data = result[0][0];
+                    let poll_data = result[0].pollData;
                     let id = result[0][1];
                     console.log(id)
                     let ctx = document.getElementById('result-chart').getContext('2d');
